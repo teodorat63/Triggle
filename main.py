@@ -77,13 +77,11 @@ class TriggleGame:
                 print(f"{'   ' * offset}{' '.join(second_triangle_line)}")
 
         print(f"   {'   ' * (n - 1)}{column_numbers}")
-
 #DONE
     def is_part_of_horizontal_stick(self, row, col):
         if ((row, col), (row, col + 1)) in self.sticks:
             return True
         return False
-
 #DONE
     def is_part_of_diagonal_stick(self, row, col, direction):
         if direction == "DL" and row < self.side_length - 1:  #
@@ -96,6 +94,7 @@ class TriggleGame:
             return ((row, col), (row + 1, col)) in self.sticks or ((row + 1, col), (row, col)) in self.sticks
         return False
 
+#DONE
     def is_valid_move(self, row, col, direction):
 
         r, c = row, col
@@ -127,15 +126,13 @@ class TriggleGame:
             r, c = r + dr, c + dc
         return True, None
 
-#URGENT
+#DONE
     def make_move(self, row, col, direction):
         is_valid, error_message = self.is_valid_move(row, col, direction)
         if not is_valid:
             raise ValueError(error_message)
 
         r, c = row, col
-
-        print(f"Duzina ove vrste je: {len(self.board[r])}")
         for _ in range(3):
 
             # Update deltas based on the current value of r
@@ -182,7 +179,9 @@ class TriggleGame:
         n = self.side_length
 
         #To be calculated
-        max_triangles = sys.maxsize
+        max_triangles = 9999
+        # for step in self.side_length - 2:
+        #     max_triangles = max_triangles + 2 * len(self.board[step]) - 1
 
         # Count triangles owned by each player
         x_count = sum(1 for owner in self.triangles.values() if owner == 'X')
@@ -211,11 +210,18 @@ class TriggleGame:
 
         return False
 
+#DONE
+    def calculate_max_triangles(self):
+        max_triangles = 0
+        for step in range(self.side_length - 1):
+            max_triangles += 2 * len(self.board[step]) - 1
+        max_triangles = max_triangles * 2
+        return max_triangles
 
 #DONE
 def setup_game():
     #n = int(input("Enter the side length of the hexagonal board (4-8): "))
-    n = 4
+    n = 5
     if n < 4 or n > 8:
         raise ValueError("Side length must be between 4 and 8.")
 
