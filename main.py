@@ -121,11 +121,11 @@ class TriggleGame:
 
             dr, dc = deltas[direction]
 
-            if not (0 <= r < len(self.board) and 0 <= col < len(self.board[r])):
+            if not (0 <= r < len(self.board) and 0 <= c < len(self.board[r])):
                 return False, f"Peg at step {step + 1} is out of bounds."
 
             r, c = r + dr, c + dc
-            return True, None
+        return True, None
 
 #URGENT
     def make_move(self, row, col, direction):
@@ -135,7 +135,7 @@ class TriggleGame:
 
         r, c = row, col
 
-
+        print(f"Duzina ove vrste je: {len(self.board[r])}")
         for _ in range(3):
 
             # Update deltas based on the current value of r
@@ -242,6 +242,7 @@ def main():
             row, col = ord(row.upper()) - 65, int(col) - 1
             game.make_move(row, col, direction.upper())
             game.display_board()
+
 
         except ValueError as e:
             print(f"Error: {e}")
