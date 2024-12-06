@@ -97,31 +97,35 @@ class TriggleGame:
         return False
 
     def is_valid_move(self, row, col, direction):
-        deltas = {
-            'D': (0, 1),  # Rightwards
-            'DL': (1, 0),  # Down-left
-            'DD': (1, 1)  # Down-right
-        }
 
-        if direction not in deltas:
-            return False, "Invalid direction. Use 'D', 'DL', or 'DD'."
-
-        dr, dc = deltas[direction]
         r, c = row, col
 
-        for step in range(4):
-            if r >= self.side_length:  # Bottom triangle offset adjustment
-                bottom_offset = r - (self.side_length - 1)
-                adjusted_col = c - bottom_offset
+        for step in range(3):
+            #TOP TRIANGLE
+            if r < self.side_length - 1:
+                deltas = {
+                    'D': (0, 1),
+                    'DL': (1, 0),
+                    'DD': (1, 1)
+                }
             else:
-                adjusted_col = c
+                #BOTTOM TRIANGLE
+                deltas = {
+                    'D': (0, 1),
+                    'DL': (1, -1),
+                    'DD': (1, 0)
+                }
 
-            if not (0 <= r < len(self.board) and 0 <= adjusted_col < len(self.board[r])):
+            if direction not in deltas:
+                return False, "Invalid direction. Use 'D', 'DL', or 'DD'."
+
+            dr, dc = deltas[direction]
+
+            if not (0 <= r < len(self.board) and 0 <= col < len(self.board[r])):
                 return False, f"Peg at step {step + 1} is out of bounds."
 
             r, c = r + dr, c + dc
-
-        return True, None
+            return True, None
 
 #URGENT
     def make_move(self, row, col, direction):
