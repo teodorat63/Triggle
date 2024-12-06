@@ -5,21 +5,8 @@ class TriggleGame:
     def __init__(self, side_length):
         self.side_length = side_length
         self.board = self.initialize_board(side_length)
-        self.sticks = {
-            # Za prvi trougao
-            ((0, 0), (1, 0)),
-            ((1, 0), (1, 1)),
-            ((1, 1), (0, 0)),
-
-            # Za drugi trougao
-            ((1, 0), (2, 0)),
-            ((2, 0), (2, 1)),
-            ((2, 1), (1, 0))
-        }
-        self.triangles = {
-            (0, 0): 'X',
-            (1, 0): 'O'
-        }
+        self.sticks = set()
+        self.triangles = {}
 
         self.current_player = None
 
@@ -91,16 +78,22 @@ class TriggleGame:
 
         print(f"   {'   ' * (n - 1)}{column_numbers}")
 
+#DONE
     def is_part_of_horizontal_stick(self, row, col):
         if ((row, col), (row, col + 1)) in self.sticks:
             return True
         return False
 
+#DONE
     def is_part_of_diagonal_stick(self, row, col, direction):
-        if direction == "DL":  #
+        if direction == "DL" and row < self.side_length - 1:  #
             return ((row, col), (row + 1, col)) in self.sticks or ((row + 1, col), (row, col)) in self.sticks
-        elif direction == "DD":
+        elif direction == "DL" and row >= self.side_length - 1:
+            return ((row, col), (row + 1, col-1)) in self.sticks or ((row + 1, col-1), (row, col)) in self.sticks
+        elif direction == "DD" and row < self.side_length - 1:
             return ((row, col), (row + 1, col + 1)) in self.sticks or ((row + 1, col + 1), (row, col)) in self.sticks
+        elif direction == "DD" and row >= self.side_length - 1:
+            return ((row, col), (row + 1, col)) in self.sticks or ((row + 1, col), (row, col)) in self.sticks
         return False
 
     def is_valid_move(self, row, col, direction):
@@ -130,39 +123,44 @@ class TriggleGame:
 
         return True, None
 
+#URGENT
     def make_move(self, row, col, direction):
         is_valid, error_message = self.is_valid_move(row, col, direction)
         if not is_valid:
             raise ValueError(error_message)
 
-        deltas = {
-            'D': (0, 1),
-            'DL': (1, 0),
-            'DD': (1, 1)
-        }
-
-        dr, dc = deltas[direction]
         r, c = row, col
 
 
         for _ in range(3):
-            # Adjust for bottom triangle
-            if r >= self.side_length:
-                bottom_offset = r - (self.side_length - 1)
-                if c < bottom_offset:
-                    raise ValueError("Move out of bounds in bottom triangle.")
-                adjusted_col = c - bottom_offset
-            else:
-                adjusted_col = c
 
-            if not (0 <= r < len(self.board) and 0 <= adjusted_col < len(self.board[r])):
+            # Update deltas based on the current value of r
+
+            #TOP TRIANGLE
+            if r < self.side_length - 1:
+                deltas = {
+                    'D': (0, 1),
+                    'DL': (1, 0),
+                    'DD': (1, 1)
+                }
+            else:
+                #BOTTOM TRIANGLE
+                deltas = {
+                    'D': (0, 1),
+                    'DL': (1, -1),
+                    'DD': (1, 0)
+                }
+
+            dr, dc = deltas[direction]
+
+            if not (0 <= r < len(self.board) and 0 <= col < len(self.board[r])):
                 raise ValueError("Move out of bounds.")
 
             next_r, next_c = r + dr, c + dc
             self.sticks.add(((r, c), (next_r, next_c)))
             r, c = next_r, next_c
 
-#print(f"Debug: Current sticks in the game: {self.sticks}")
+        print(f"Debug: Current sticks in the game: {self.sticks}")
 
         self.check_and_capture_triangles(row, col, direction)
         self.switch_player()
@@ -171,8 +169,10 @@ class TriggleGame:
         # To be implemented
         pass
 
+#DONE
     def switch_player(self):
         self.current_player = 'X' if self.current_player == 'O' else 'O'
+
 
     def is_game_over(self):
         n = self.side_length
@@ -208,9 +208,10 @@ class TriggleGame:
         return False
 
 
+#DONE
 def setup_game():
     #n = int(input("Enter the side length of the hexagonal board (4-8): "))
-    n = 8
+    n = 4
     if n < 4 or n > 8:
         raise ValueError("Side length must be between 4 and 8.")
 
@@ -229,8 +230,6 @@ def main():
 
     while not game.is_game_over():
         print(f"\n{game.current_player}'s turn.")
-        game.make_move(0,0, 'DL')
-        game.make_move(0,0, 'DD')
 
         game.display_board()
         try:
@@ -239,13 +238,13 @@ def main():
             row, col = ord(row.upper()) - 65, int(col) - 1
             game.make_move(row, col, direction.upper())
             game.display_board()
+
         except ValueError as e:
             print(f"Error: {e}")
         except Exception as e:
             print(f"Unexpected error: {e}")
 
 
-    game.display_board()
 
 
     print("\nGame Over!")
