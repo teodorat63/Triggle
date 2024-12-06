@@ -93,7 +93,6 @@ class TriggleGame:
         elif direction == "DD" and row >= self.side_length - 1:
             return ((row, col), (row + 1, col)) in self.sticks or ((row + 1, col), (row, col)) in self.sticks
         return False
-
 #DONE
     def is_valid_move(self, row, col, direction):
 
@@ -125,8 +124,7 @@ class TriggleGame:
 
             r, c = r + dr, c + dc
         return True, None
-
-#DONE
+#FIX OUT oF RANGE
     def make_move(self, row, col, direction):
         is_valid, error_message = self.is_valid_move(row, col, direction)
         if not is_valid:
@@ -165,7 +163,7 @@ class TriggleGame:
 
         self.check_and_capture_triangles(row, col, direction)
         self.switch_player()
-
+#TO DO
     def check_and_capture_triangles(self, row, col, direction):
         # To be implemented
         pass
@@ -173,15 +171,11 @@ class TriggleGame:
 #DONE
     def switch_player(self):
         self.current_player = 'X' if self.current_player == 'O' else 'O'
-
-
+#DONE
     def is_game_over(self):
         n = self.side_length
 
-        #To be calculated
-        max_triangles = 9999
-        # for step in self.side_length - 2:
-        #     max_triangles = max_triangles + 2 * len(self.board[step]) - 1
+        max_triangles = self.calculate_max_triangles()
 
         # Count triangles owned by each player
         x_count = sum(1 for owner in self.triangles.values() if owner == 'X')
@@ -201,7 +195,7 @@ class TriggleGame:
             return True
 
         #Calculate max_sticks here
-        max_sticks = sys.maxsize
+        max_sticks = self.calculate_max_sticks()
 
         # Check if all sticks are placed
         if len(self.sticks) == max_sticks:
@@ -209,7 +203,6 @@ class TriggleGame:
             return True
 
         return False
-
 #DONE
     def calculate_max_triangles(self):
         max_triangles = 0
@@ -217,11 +210,18 @@ class TriggleGame:
             max_triangles += 2 * len(self.board[step]) - 1
         max_triangles = max_triangles * 2
         return max_triangles
+#DONE
+    def calculate_max_sticks(self):
 
+        number_of_pegs = sum(len(row) for row in self.board)
+
+        number_of_sticks =  6 * 3 + (self.side_length - 2) * 4 * 6 +  ( number_of_pegs - 6 - (self.side_length - 2)* 6) * 6
+        number_of_sticks = number_of_sticks / 2;
+        return number_of_sticks
 #DONE
 def setup_game():
     #n = int(input("Enter the side length of the hexagonal board (4-8): "))
-    n = 5
+    n = 4
     if n < 4 or n > 8:
         raise ValueError("Side length must be between 4 and 8.")
 
@@ -232,6 +232,7 @@ def setup_game():
 
     game = TriggleGame(n)
     game.current_player = first_player
+    print(f" Broj gumica: {game.calculate_max_sticks()}")
     return game
 
 
