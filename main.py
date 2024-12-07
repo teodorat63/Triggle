@@ -129,21 +129,19 @@ class TriggleGame:
 
         return triangle_owner
 
-    #DONE
+#FIX!
     def is_valid_move(self, row, col, direction):
-
         r, c = row, col
 
         for step in range(3):
-            #TOP TRIANGLE
-            if r < self.side_length - 1:
+            # Set deltas based on the current row
+            if r < self.side_length - 1:  # Upper triangle
                 deltas = {
                     'D': (0, 1),
                     'DL': (1, 0),
                     'DD': (1, 1)
                 }
-            else:
-                #BOTTOM TRIANGLE
+            else:  # Lower triangle
                 deltas = {
                     'D': (0, 1),
                     'DL': (1, -1),
@@ -154,11 +152,14 @@ class TriggleGame:
                 return False, "Invalid direction. Use 'D', 'DL', or 'DD'."
 
             dr, dc = deltas[direction]
+            next_r, next_c = r + dr, c + dc
 
-            if not (0 <= r < len(self.board) and 0 <= c < len(self.board[r])):
+            # Check if the new position is within bounds
+            if not (0 <= next_r < len(self.board) and 0 <= next_c < len(self.board[next_r])):
                 return False, f"Peg at step {step + 1} is out of bounds."
 
-            r, c = r + dr, c + dc
+            r, c = next_r, next_c
+
         return True, None
 
     def make_move(self, row, col, direction):
@@ -196,10 +197,10 @@ class TriggleGame:
 
             r, c = next_r, next_c
 
-        self.capture_all_existing_triangles()
+        self.check_and_capture_triangles()
         self.switch_player()
 
-    def capture_all_existing_triangles(self):
+    def check_and_capture_triangles(self):
         def is_triangle_completed(corners):
             return all(
                 ((corners[i], corners[(i + 1) % len(corners)]) in self.sticks or
@@ -238,10 +239,6 @@ class TriggleGame:
                             self.triangles[triangle_key] = self.current_player
                             #print(f"Captured triangle: {triangle_key} by player {self.current_player}")
 
-    #TO DO
-    def check_and_capture_triangles(self, row, col, direction):
-        # To be implemented
-        pass
 #DONE
     def switch_player(self):
         self.current_player = 'X' if self.current_player == 'O' else 'O'
