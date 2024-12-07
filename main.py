@@ -8,7 +8,7 @@ class TriggleGame:
         self.sticks = set()
         self.triangles = {}
         self.triangles = {
-            tuple(sorted([(5,2), (6, 1), (6, 2)])): 'X',  # Another triangle owned by X
+            #tuple(sorted([(5,2), (6, 1), (6, 2)])): 'X',  # Triangle owned by X
         }
 
         self.current_player = None
@@ -19,7 +19,7 @@ class TriggleGame:
             [[None] * (side_length + i) for i in range(side_length)] +  # Upper triangle
             [[None] * (2 * side_length - i - 1) for i in range(1, side_length)]  # Lower triangle
         )
-
+#DONE
     def display_board(self):
         n = self.side_length
         max_width = 2 * self.side_length - 1
@@ -96,7 +96,7 @@ class TriggleGame:
         elif direction == "DD" and row >= self.side_length - 1:
             return ((row, col), (row + 1, col)) in self.sticks or ((row + 1, col), (row, col)) in self.sticks
         return False
-
+#DONE
     def get_triangle_owner(self, row, col, downward):
         triangle_owner = " "
 
@@ -201,9 +201,11 @@ class TriggleGame:
 
     def capture_all_existing_triangles(self):
         def is_triangle_completed(corners):
-            return all(((corners[i], corners[i + 1]) in self.sticks or
-                        (corners[i + 1], corners[i]) in self.sticks)
-                       for i in range(len(corners) - 1))
+            return all(
+                ((corners[i], corners[(i + 1) % len(corners)]) in self.sticks or
+                 (corners[(i + 1) % len(corners)], corners[i]) in self.sticks)
+                for i in range(len(corners))
+            )
 
         # Traverse the board
         for row in range(len(self.board)):
@@ -214,14 +216,14 @@ class TriggleGame:
                 if row < self.side_length - 1:  # Upper triangle
                     potential_triangles.extend([
                         # Triangle facing down
-                        [(row, col), (row, col + 1), (row + 1, col)],
+                        [(row, col), (row, col + 1), (row + 1, col+1)],
                         # Triangle facing up
                         [(row, col), (row + 1, col), (row + 1, col + 1)]
                     ])
                 else:  # Lower triangle
                     potential_triangles.extend([
                         # Triangle facing down
-                        [(row, col), (row, col + 1), (row + 1, col - 1)],
+                        [(row, col), (row, col + 1), (row + 1, col)],
                         # Triangle facing up
                         [(row, col), (row + 1, col - 1), (row + 1, col)]
                     ])
@@ -234,6 +236,7 @@ class TriggleGame:
                         if triangle_key not in self.triangles:
                             # Capture the triangle with 'X' or 'O' (you can decide default ownership logic here)
                             self.triangles[triangle_key] = self.current_player
+                            print(f"Captured triangle: {triangle_key} by player {self.current_player}")
 
     #TO DO
     def check_and_capture_triangles(self, row, col, direction):
@@ -318,7 +321,7 @@ def main():
             row, col, direction = move.rsplit(' ', 2)
             row, col = ord(row.upper()) - 65, int(col) - 1
             game.make_move(row, col, direction.upper())
-            game.display_board()
+
 
 
         except ValueError as e:
