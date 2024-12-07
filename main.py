@@ -56,8 +56,7 @@ class TriggleGame:
                 #first_triangle_line.append("   ")
 
                 # Get the triangle owner upper
-                key_to_search = tuple(sorted([(i, j), (i, j+1), (i+1, j+1)]))
-                triangle_owner = self.triangles.get(key_to_search, ' ')
+                triangle_owner = self.get_triangle_owner(i, j, True)
                 first_triangle_line.append(f" {triangle_owner} ")
 
             # Second triangle line
@@ -67,11 +66,8 @@ class TriggleGame:
                 second_triangle_line.append("/" if down_left else " ")
 
                 # Add the triangle owner
-                key_to_search = tuple(sorted([(i, j), (i + 1, j), (i + 1, j + 1)]))
-                triangle_owner = self.triangles.get(key_to_search, ' ')
+                triangle_owner = self.get_triangle_owner(i, j, False)
                 second_triangle_line.append(f"{triangle_owner}")
-
-
 
                 down_right = self.is_part_of_diagonal_stick(i, j, "DD")
                 second_triangle_line.append("\\" if down_right else " ")
@@ -101,25 +97,28 @@ class TriggleGame:
             return ((row, col), (row + 1, col)) in self.sticks or ((row + 1, col), (row, col)) in self.sticks
         return False
 
-    def get_triangle_owner(self, row, col):
-        """
-        Returns the owner ('X', 'O', or ' ') of the triangle associated with a peg at (row, col),
-        or a space (' ') if no triangle is present.
-        """
-        # Default to no owner
+    def get_triangle_owner(self, row, col, downward):
         triangle_owner = " "
 
-        # Determine potential triangles
-        if row < self.side_length - 1:  # Upper triangle board
-            potential_triangles = [
-                [(row, col), (row, col + 1), (row + 1, col)],  # Downward-facing triangle
-                [(row, col), (row + 1, col), (row + 1, col + 1)]  # Upward-facing triangle
-            ]
-        else:  # Lower triangle board
-            potential_triangles = [
-                [(row, col), (row, col + 1), (row + 1, col - 1)],  # Downward-facing triangle
-                [(row, col), (row + 1, col - 1), (row + 1, col)]  # Upward-facing triangle
-            ]
+        # Determine potential triangles based on `firstRow` flag
+        if downward:  # Use downward-facing triangle formula
+            if row < self.side_length - 1:  # Upper triangle board
+                potential_triangles = [
+                    [(row, col), (row, col + 1), (row + 1, col+1)]  # Downward-facing triangle
+                ]
+            else:  # Lower triangle board
+                potential_triangles = [
+                    [(row, col), (row, col + 1), (row + 1, col)]  # Downward-facing triangle
+                ]
+        else:  # Use upward-facing triangle formula
+            if row < self.side_length - 1:  # Upper triangle board
+                potential_triangles = [
+                    [(row, col), (row + 1, col), (row + 1, col + 1)]  # Upward-facing triangle
+                ]
+            else:  # Lower triangle board
+                potential_triangles = [
+                    [(row, col), (row + 1, col - 1), (row + 1, col)]  # Upward-facing triangle
+                ]
 
         # Check ownership for potential triangles
         for corners in potential_triangles:
