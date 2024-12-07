@@ -150,16 +150,19 @@ class TriggleGame:
                     'DD': (1, 0)
                 }
 
+            print(f"1. Debug: Current sticks in the game: {self.sticks}")
+            print(f"Current r: {self.sticks}")
+
             dr, dc = deltas[direction]
 
-            if not (0 <= r < len(self.board) and 0 <= col < len(self.board[r])):
+            if not (0 <= r < len(self.board) and 0 <= c < len(self.board[r])):
                 raise ValueError("Move out of bounds.")
 
             next_r, next_c = r + dr, c + dc
             self.sticks.add(((r, c), (next_r, next_c)))
             r, c = next_r, next_c
 
-        print(f"Debug: Current sticks in the game: {self.sticks}")
+        print(f"2. Debug: Current sticks in the game: {self.sticks}")
 
         self.check_and_capture_triangles(row, col, direction)
         self.switch_player()
@@ -167,7 +170,6 @@ class TriggleGame:
     def check_and_capture_triangles(self, row, col, direction):
         # To be implemented
         pass
-
 #DONE
     def switch_player(self):
         self.current_player = 'X' if self.current_player == 'O' else 'O'
@@ -235,7 +237,6 @@ def setup_game():
     print(f" Broj gumica: {game.calculate_max_sticks()}")
     return game
 
-
 def main():
     game = setup_game()
 
@@ -260,7 +261,6 @@ def main():
 
 
     print("\nGame Over!")
-
 
 if __name__ == "__main__":
     main()
