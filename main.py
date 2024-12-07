@@ -150,9 +150,6 @@ class TriggleGame:
                     'DD': (1, 0)
                 }
 
-            print(f"1. Debug: Current sticks in the game: {self.sticks}")
-            print(f"Current r: {self.sticks}")
-
             dr, dc = deltas[direction]
 
             if not (0 <= r < len(self.board) and 0 <= c < len(self.board[r])):
@@ -161,8 +158,6 @@ class TriggleGame:
             next_r, next_c = r + dr, c + dc
             self.sticks.add(((r, c), (next_r, next_c)))
             r, c = next_r, next_c
-
-        print(f"2. Debug: Current sticks in the game: {self.sticks}")
 
         self.check_and_capture_triangles(row, col, direction)
         self.switch_player()
