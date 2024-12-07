@@ -236,7 +236,7 @@ class TriggleGame:
                         if triangle_key not in self.triangles:
                             # Capture the triangle with 'X' or 'O' (you can decide default ownership logic here)
                             self.triangles[triangle_key] = self.current_player
-                            print(f"Captured triangle: {triangle_key} by player {self.current_player}")
+                            #print(f"Captured triangle: {triangle_key} by player {self.current_player}")
 
     #TO DO
     def check_and_capture_triangles(self, row, col, direction):
