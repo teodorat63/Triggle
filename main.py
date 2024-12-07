@@ -7,6 +7,9 @@ class TriggleGame:
         self.board = self.initialize_board(side_length)
         self.sticks = set()
         self.triangles = {}
+        self.triangles = {
+            tuple(sorted([(5,2), (6, 1), (6, 2)])): 'X',  # Another triangle owned by X
+        }
 
         self.current_player = None
 
@@ -51,10 +54,11 @@ class TriggleGame:
                 # Add right diagonal
                 first_triangle_line.append("\\" if down_right else " ")
                 #first_triangle_line.append("   ")
-                # Add the triangle owner
-                owner = self.triangles.get((i, j), " ")  # Get the owner ('X', 'O', or None)
-                first_triangle_line.append(f" {owner} ")
 
+                # Get the triangle owner upper
+                key_to_search = tuple(sorted([(i, j), (i, j+1), (i+1, j+1)]))
+                triangle_owner = self.triangles.get(key_to_search, ' ')
+                first_triangle_line.append(f" {triangle_owner} ")
 
             # Second triangle line
             second_triangle_line = []
@@ -63,8 +67,11 @@ class TriggleGame:
                 second_triangle_line.append("/" if down_left else " ")
 
                 # Add the triangle owner
-                owner = self.triangles.get((i, j), " ")  # Get the owner ('X', 'O', or None)
-                second_triangle_line.append(f"{owner}")
+                key_to_search = tuple(sorted([(i, j), (i + 1, j), (i + 1, j + 1)]))
+                triangle_owner = self.triangles.get(key_to_search, ' ')
+                second_triangle_line.append(f"{triangle_owner}")
+
+
 
                 down_right = self.is_part_of_diagonal_stick(i, j, "DD")
                 second_triangle_line.append("\\" if down_right else " ")
@@ -93,7 +100,37 @@ class TriggleGame:
         elif direction == "DD" and row >= self.side_length - 1:
             return ((row, col), (row + 1, col)) in self.sticks or ((row + 1, col), (row, col)) in self.sticks
         return False
-#DONE
+
+    def get_triangle_owner(self, row, col):
+        """
+        Returns the owner ('X', 'O', or ' ') of the triangle associated with a peg at (row, col),
+        or a space (' ') if no triangle is present.
+        """
+        # Default to no owner
+        triangle_owner = " "
+
+        # Determine potential triangles
+        if row < self.side_length - 1:  # Upper triangle board
+            potential_triangles = [
+                [(row, col), (row, col + 1), (row + 1, col)],  # Downward-facing triangle
+                [(row, col), (row + 1, col), (row + 1, col + 1)]  # Upward-facing triangle
+            ]
+        else:  # Lower triangle board
+            potential_triangles = [
+                [(row, col), (row, col + 1), (row + 1, col - 1)],  # Downward-facing triangle
+                [(row, col), (row + 1, col - 1), (row + 1, col)]  # Upward-facing triangle
+            ]
+
+        # Check ownership for potential triangles
+        for corners in potential_triangles:
+            triangle_key = tuple(sorted(corners))
+            if triangle_key in self.triangles:
+                triangle_owner = self.triangles[triangle_key]
+                break  # Return the first matching triangle's owner
+
+        return triangle_owner
+
+    #DONE
     def is_valid_move(self, row, col, direction):
 
         r, c = row, col
@@ -124,7 +161,7 @@ class TriggleGame:
 
             r, c = r + dr, c + dc
         return True, None
-#FIX OUT oF RANGE
+
     def make_move(self, row, col, direction):
         is_valid, error_message = self.is_valid_move(row, col, direction)
         if not is_valid:
@@ -157,11 +194,49 @@ class TriggleGame:
 
             next_r, next_c = r + dr, c + dc
             self.sticks.add(((r, c), (next_r, next_c)))
+
             r, c = next_r, next_c
 
-        self.check_and_capture_triangles(row, col, direction)
+        self.capture_all_existing_triangles()
         self.switch_player()
-#TO DO
+
+    def capture_all_existing_triangles(self):
+        def is_triangle_completed(corners):
+            return all(((corners[i], corners[i + 1]) in self.sticks or
+                        (corners[i + 1], corners[i]) in self.sticks)
+                       for i in range(len(corners) - 1))
+
+        # Traverse the board
+        for row in range(len(self.board)):
+            for col in range(len(self.board[row])):
+                potential_triangles = []
+
+                # Add potential triangles based on the peg's location
+                if row < self.side_length - 1:  # Upper triangle
+                    potential_triangles.extend([
+                        # Triangle facing down
+                        [(row, col), (row, col + 1), (row + 1, col)],
+                        # Triangle facing up
+                        [(row, col), (row + 1, col), (row + 1, col + 1)]
+                    ])
+                else:  # Lower triangle
+                    potential_triangles.extend([
+                        # Triangle facing down
+                        [(row, col), (row, col + 1), (row + 1, col - 1)],
+                        # Triangle facing up
+                        [(row, col), (row + 1, col - 1), (row + 1, col)]
+                    ])
+
+                # Check each potential triangle
+                for corners in potential_triangles:
+                    if is_triangle_completed(corners):
+                        # Sort the corners to have a consistent representation
+                        triangle_key = tuple(sorted(corners))
+                        if triangle_key not in self.triangles:
+                            # Capture the triangle with 'X' or 'O' (you can decide default ownership logic here)
+                            self.triangles[triangle_key] = self.current_player
+
+    #TO DO
     def check_and_capture_triangles(self, row, col, direction):
         # To be implemented
         pass
