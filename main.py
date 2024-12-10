@@ -8,6 +8,8 @@ class TriggleGame:
         self.sticks = set()
         self.triangles = {}
         self.current_player = None
+        self.max_sticks = None
+        self.peg_number = None
 
 #DONE
     def initialize_board(self, side_length):
@@ -243,6 +245,7 @@ class TriggleGame:
         # Count triangles owned by each player
         x_count = sum(1 for owner in self.triangles.values() if owner == 'X')
         o_count = sum(1 for owner in self.triangles.values() if owner == 'O')
+        print(f"Score - X: {x_count} O:{o_count}")
 
         # All triangles are taken/ player has majority
         if x_count + o_count == max_triangles:
@@ -257,11 +260,8 @@ class TriggleGame:
             print("Game over: Player O has won by majority!")
             return True
 
-        #Calculate max_sticks here
-        max_sticks = self.calculate_max_sticks()
-
         # Check if all sticks are placed
-        if len(self.sticks) == max_sticks:
+        if len(self.sticks) == self.max_sticks:
             print("Game over: All sticks are placed.")
             return True
 
@@ -275,11 +275,9 @@ class TriggleGame:
         return max_triangles
 #DONE
     def calculate_max_sticks(self):
-#OUT
-        number_of_pegs = sum(len(row) for row in self.board)
 
 #MAKE IT MORE READABLE
-        number_of_connections =  6 * 3 + (self.side_length - 2) * 4 * 6 +  ( number_of_pegs - 6 - (self.side_length - 2)* 6) * 6
+        number_of_connections =  6 * 3 + (self.side_length - 2) * 4 * 6 +  ( self.peg_number - 6 - (self.side_length - 2)* 6) * 6
         number_of_sticks = number_of_connections / 2
         return number_of_sticks
 #DONE
@@ -296,6 +294,10 @@ def setup_game():
 
     game = TriggleGame(n)
     game.current_player = first_player
+
+    game.peg_number = sum(len(row) for row in game.board)
+    game.max_sticks = game.calculate_max_sticks()
+
     return game
 
 #REDO
