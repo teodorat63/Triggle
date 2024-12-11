@@ -1,4 +1,4 @@
-import sys
+import copy
 
 
 class TriggleGame:
@@ -289,6 +289,36 @@ class TriggleGame:
         number_of_connections =  6 * 3 + (self.side_length - 2) * 4 * 6 +  ( self.peg_number - 6 - (self.side_length - 2)* 6) * 6
         number_of_sticks = number_of_connections / 2
         return number_of_sticks
+
+    def get_all_possible_moves(self):
+
+        possible_moves = []
+
+        for row in range(len(self.board)):
+            for col in range(len(self.board[row])):
+                for direction in ['D', 'DL', 'DD']:
+                    is_valid, _ = self.is_valid_move(row, col, direction)
+                    if is_valid:
+                        possible_moves.append((row, col, direction))
+        return possible_moves
+
+    def get_all_possible_states(self):
+
+        possible_moves = self.get_all_possible_moves()
+        possible_states = []
+
+        for move in possible_moves:
+            new_state = copy.deepcopy(self)
+
+            # Apply the move to the new state
+            row, col, direction = move
+            new_state.make_move(row, col, direction)
+
+            # Add the new state to the list
+            possible_states.append(new_state)
+
+        return possible_states
+
 #DONE
 def setup_game():
     #n = int(input("Enter the side length of the hexagonal board (4-8): "))
@@ -308,6 +338,23 @@ def setup_game():
     game.max_sticks = game.calculate_max_sticks()
 
     return game
+
+def test_generate_states():
+    game = setup_game()
+    game.display_board()
+
+    print(f"\nCurrent player: {game.current_player}")
+    print("Generating all possible moves...")
+    possible_moves = game.get_all_possible_moves()
+    print(f"Total possible moves: {len(possible_moves)}")
+    print(possible_moves)
+
+    print("\nGenerating all possible game states...")
+    possible_states = game.get_all_possible_states()
+    print(f"Total possible game states: {len(possible_states)}")
+    # for i, state in enumerate(possible_states[:5]):
+    #     print(f"\nState {i + 1}:")
+    #     state.display_board()
 
 #REDO
 def main():

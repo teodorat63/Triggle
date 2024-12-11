@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7e05a13f-0856-4bb6-a415-62c8d098c711" name="Changes" comment="feat: Display score on every turn&#10;fix:max_sticks and peg_number calculated only once">
+    <list default="true" id="7e05a13f-0856-4bb6-a415-62c8d098c711" name="Changes" comment="Add validation to prevent duplicate moves by any player in is_valid_move">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
@@ -213,7 +213,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733839308674</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Add validation to prevent duplicate moves by any player in is_valid_move">
+      <option name="closed" value="true" />
+      <created>1733839774772</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1733839774772</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -229,6 +237,7 @@
     <MESSAGE value="Fix: Out-of-bound issue at is_valid_move" />
     <MESSAGE value="minor fixes" />
     <MESSAGE value="feat: Display score on every turn&#10;fix:max_sticks and peg_number calculated only once" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: Display score on every turn&#10;fix:max_sticks and peg_number calculated only once" />
+    <MESSAGE value="Add validation to prevent duplicate moves by any player in is_valid_move" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add validation to prevent duplicate moves by any player in is_valid_move" />
   </component>
 </project>
