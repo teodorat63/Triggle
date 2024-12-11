@@ -12,13 +12,13 @@ class TriggleGame:
         self.peg_number = None
         self.player_moves = {'X': [], 'O': []}
 
-#DONE
+
     def initialize_board(self, side_length):
         return (
             [[None] * (side_length + i) for i in range(side_length)] +  # Upper triangle
             [[None] * (2 * side_length - i - 1) for i in range(1, side_length)]  # Lower triangle
         )
-#DONE
+
     def display_board(self):
         n = self.side_length
         max_width = 2 * self.side_length - 1
@@ -79,12 +79,12 @@ class TriggleGame:
                 print(f"{'   ' * offset}{' '.join(second_triangle_line)}")
 
         print(f"   {'   ' * (n - 1)}{column_numbers}")
-#DONE
+
     def is_part_of_horizontal_stick(self, row, col):
         if ((row, col), (row, col + 1)) in self.sticks:
             return True
         return False
-#DONE
+
     def is_part_of_diagonal_stick(self, row, col, direction):
         if direction == "DL" and row < self.side_length - 1:  #
             return ((row, col), (row + 1, col)) in self.sticks or ((row + 1, col), (row, col)) in self.sticks
@@ -95,7 +95,7 @@ class TriggleGame:
         if direction == "DD" and row >= self.side_length - 1:
             return ((row, col), (row + 1, col)) in self.sticks or ((row + 1, col), (row, col)) in self.sticks
         return False
-#DONE
+
     def get_triangle_owner(self, row, col, downward):
         triangle_owner = " "
 
@@ -127,7 +127,7 @@ class TriggleGame:
                 break  # Return the first matching triangle's owner
 
         return triangle_owner
-#DONE
+
     def is_valid_move(self, row, col, direction):
 
         # Check if the move has already been played
@@ -165,7 +165,7 @@ class TriggleGame:
             r, c = next_r, next_c
 
         return True, None
-#DONE
+
     def make_move(self, row, col, direction):
         is_valid, error_message = self.is_valid_move(row, col, direction)
         if not is_valid:
@@ -241,22 +241,20 @@ class TriggleGame:
                         # Sort the corners to have a consistent representation
                         triangle_key = tuple(sorted(corners))
                         if triangle_key not in self.triangles:
-                            # Capture the triangle with 'X' or 'O' (you can decide default ownership logic here)
                             self.triangles[triangle_key] = self.current_player
-                            #print(f"Captured triangle: {triangle_key} by player {self.current_player}")
-#DONE
+
     def switch_player(self):
         self.current_player = 'X' if self.current_player == 'O' else 'O'
-#DONE
+
     def is_game_over(self):
         max_triangles = self.calculate_max_triangles()
 
-        # Count triangles owned by each player
         x_count = sum(1 for owner in self.triangles.values() if owner == 'X')
         o_count = sum(1 for owner in self.triangles.values() if owner == 'O')
-        print(f"Score - X: {x_count} O:{o_count}")
+        print("Scoreboard")
+        print(f"X: {'█' * x_count} ({x_count})")
+        print(f"O: {'█' * o_count} ({o_count})")
 
-        # All triangles are taken/ player has majority
         if x_count + o_count == max_triangles:
             print("Game over: All triangles are captured.")
             return True
@@ -269,25 +267,25 @@ class TriggleGame:
             print("Game over: Player O has won by majority!")
             return True
 
-        # Check if all sticks are placed
         if len(self.sticks) == self.max_sticks:
             print("Game over: All sticks are placed.")
             return True
 
         return False
-#DONE
+
     def calculate_max_triangles(self):
         max_triangles = 0
         for step in range(self.side_length - 1):
             max_triangles += 2 * len(self.board[step]) - 1
         max_triangles = max_triangles * 2
         return max_triangles
-#DONE
-    def calculate_max_sticks(self):
 
-#MAKE IT MORE READABLE
-        number_of_connections =  6 * 3 + (self.side_length - 2) * 4 * 6 +  ( self.peg_number - 6 - (self.side_length - 2)* 6) * 6
-        number_of_sticks = number_of_connections / 2
+    def calculate_max_sticks(self):
+        corner_connections = 6 * 3
+        side_connections = (self.side_length - 2) * 4 * 6
+        center_connections = (self.peg_number - 6 - (self.side_length - 2) * 6) * 6
+        total_connections = corner_connections + side_connections + center_connections
+        number_of_sticks = total_connections / 2
         return number_of_sticks
 
     def get_all_possible_moves(self):
@@ -319,7 +317,6 @@ class TriggleGame:
 
         return possible_states
 
-#DONE
 def setup_game():
     #n = int(input("Enter the side length of the hexagonal board (4-8): "))
     n = 4
@@ -339,6 +336,12 @@ def setup_game():
 
     return game
 
+def GetInput():
+    move = input("Enter your move (format: row column direction): ").strip()
+    row, col, direction = move.rsplit(' ', 2)
+    row, col = ord(row.upper()) - 65, int(col) - 1
+    return row, col, direction.upper()
+
 def test_generate_states():
     game = setup_game()
     game.display_board()
@@ -356,20 +359,16 @@ def test_generate_states():
     #     print(f"\nState {i + 1}:")
     #     state.display_board()
 
-#REDO
 def main():
     game = setup_game()
 
     while not game.is_game_over():
         print(f"\n{game.current_player}'s turn.")
-
         game.display_board()
-#This doesn't need to be here
+
         try:
-            move = input("Enter your move (format: row column direction): ").strip()
-            row, col, direction = move.rsplit(' ', 2)
-            row, col = ord(row.upper()) - 65, int(col) - 1
-            game.make_move(row, col, direction.upper())
+            row, col, direction = GetInput()
+            game.make_move(row, col, direction)
 
         except ValueError as e:
             print(f"Error: {e}")
