@@ -318,13 +318,11 @@ class TriggleGame:
         return possible_states
 
 def setup_game():
-    #n = int(input("Enter the side length of the hexagonal board (4-8): "))
-    n = 4
+    n = int(input("Enter the side length of the hexagonal board (4-8): "))
     if n < 4 or n > 8:
         raise ValueError("Side length must be between 4 and 8.")
 
-    #first_player = input("Who will play first? (X/O): ").strip().upper()
-    first_player = 'X'
+    first_player = input("Who will play first? (X/O): ").strip().upper()
     if first_player not in ['X', 'O']:
         raise ValueError("Invalid choice. Choose 'X' or 'O'.")
 
@@ -336,7 +334,7 @@ def setup_game():
 
     return game
 
-def GetInput():
+def get_input():
     move = input("Enter your move (format: row column direction): ").strip()
     row, col, direction = move.rsplit(' ', 2)
     row, col = ord(row.upper()) - 65, int(col) - 1
@@ -367,7 +365,7 @@ def main():
         game.display_board()
 
         try:
-            row, col, direction = GetInput()
+            row, col, direction = get_input()
             game.make_move(row, col, direction)
 
         except ValueError as e:
