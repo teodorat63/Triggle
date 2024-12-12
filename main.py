@@ -166,7 +166,12 @@ class TriggleGame:
 
         return True, None
 
-    def make_move(self, row, col, direction):
+    def make_move(self):
+        move = input("Enter your move (format: row column direction): ").strip()
+        row, col, direction = move.rsplit(' ', 2)
+        row, col = ord(row.upper()) - 65, int(col) - 1
+        direction = direction.upper()
+
         is_valid, error_message = self.is_valid_move(row, col, direction)
         if not is_valid:
             raise ValueError(error_message)
@@ -334,12 +339,6 @@ def setup_game():
 
     return game
 
-def get_input():
-    move = input("Enter your move (format: row column direction): ").strip()
-    row, col, direction = move.rsplit(' ', 2)
-    row, col = ord(row.upper()) - 65, int(col) - 1
-    return row, col, direction.upper()
-
 def test_generate_states():
     game = setup_game()
     game.display_board()
@@ -365,8 +364,7 @@ def main():
         game.display_board()
 
         try:
-            row, col, direction = get_input()
-            game.make_move(row, col, direction)
+            game.make_move()
 
         except ValueError as e:
             print(f"Error: {e}")
