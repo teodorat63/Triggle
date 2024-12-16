@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7e05a13f-0856-4bb6-a415-62c8d098c711" name="Changes" comment=".">
+    <list default="true" id="7e05a13f-0856-4bb6-a415-62c8d098c711" name="Changes" comment="Rewmoved get_input it is part of make_move now">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -244,7 +245,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733926168425</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Rewmoved get_input it is part of make_move now">
+      <option name="closed" value="true" />
+      <created>1734027541563</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1734027541563</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -263,6 +272,7 @@
     <MESSAGE value="Add validation to prevent duplicate moves by any player in is_valid_move" />
     <MESSAGE value="feat Add functions to generate possible moves and game states&#10;&#10;- Implemented logic to form all possible moves based on the current player and board state.&#10;- Added functionality to compute all resulting game states from these moves.&#10;- This enhancement supports AI-driven decision-making and analysis of game outcomes." />
     <MESSAGE value="." />
-    <option name="LAST_COMMIT_MESSAGE" value="." />
+    <MESSAGE value="Rewmoved get_input it is part of make_move now" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rewmoved get_input it is part of make_move now" />
   </component>
 </project>

@@ -162,15 +162,20 @@ class TriggleGame:
             if not (0 <= next_r < len(self.board) and 0 <= next_c < len(self.board[next_r])):
                 return False, f"Peg at step {step + 1} is out of bounds."
 
+            # Check if there's a stick already in this step
+            if (((r, c), (next_r, next_c)) in self.sticks or
+                    ((next_r, next_c), (r, c)) in self.sticks):
+                # If all steps in the path are occupied, the move is invalid
+                if step == 2:  # This is the last step
+                    return False, "This move is invalid: All steps in the path are occupied."
+            else:
+                break  # If any step is free, the move is valid
+
             r, c = next_r, next_c
 
         return True, None
 
-    def make_move(self):
-        move = input("Enter your move (format: row column direction): ").strip()
-        row, col, direction = move.rsplit(' ', 2)
-        row, col = ord(row.upper()) - 65, int(col) - 1
-        direction = direction.upper()
+    def make_move(self, row, col, direction):
 
         is_valid, error_message = self.is_valid_move(row, col, direction)
         if not is_valid:
@@ -364,7 +369,11 @@ def main():
         game.display_board()
 
         try:
-            game.make_move()
+            move = input("Enter your move (format: row column direction): ").strip()
+            row, col, direction = move.rsplit(' ', 2)
+            row, col = ord(row.upper()) - 65, int(col) - 1
+            direction = direction.upper()
+            game.make_move(row, col, direction)
 
         except ValueError as e:
             print(f"Error: {e}")
