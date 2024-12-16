@@ -372,6 +372,7 @@ def main():
         except Exception as e:
             print(f"Unexpected error: {e}")
 
+    game.display_board()
     print("\nGame Over!")
 
 if __name__ == "__main__":
