@@ -10,8 +10,6 @@ class TriggleGame:
         self.current_player = None
         self.max_sticks = None
         self.peg_number = None
-        self.player_moves = {'X': [], 'O': []}
-
 
     def initialize_board(self, side_length):
         return (
@@ -130,11 +128,6 @@ class TriggleGame:
 
     def is_valid_move(self, row, col, direction):
 
-        # Check if the move has already been played
-        for moves in self.player_moves.values():
-            if (row, col, direction) in moves:
-                return False, "This move has already been played."
-
         r, c = row, col
 
         for step in range(3):
@@ -182,7 +175,6 @@ class TriggleGame:
             raise ValueError(error_message)
 
         r, c = row, col
-        self.player_moves[self.current_player].append((row, col, direction))
 
         for _ in range(3):
 
