@@ -1,6 +1,7 @@
 import copy
 
 
+
 class TriggleGame:
     def __init__(self, side_length):
         self.side_length = side_length
@@ -128,6 +129,7 @@ class TriggleGame:
 
     def is_valid_move(self, row, col, direction):
 
+        occupied = True
         r, c = row, col
 
         for step in range(3):
@@ -156,15 +158,13 @@ class TriggleGame:
                 return False, f"Peg at step {step + 1} is out of bounds."
 
             # Check if there's a stick already in this step
-            if (((r, c), (next_r, next_c)) in self.sticks or
-                    ((next_r, next_c), (r, c)) in self.sticks):
-                # If all steps in the path are occupied, the move is invalid
-                if step == 2:  # This is the last step
-                    return False, "This move is invalid: All steps in the path are occupied."
-            else:
-                break  # If any step is free, the move is valid
+            if not (((r, c), (next_r, next_c)) in self.sticks):
+                occupied = False
 
             r, c = next_r, next_c
+
+        if occupied:
+            return False, "This move is invalid: All steps in the path are occupied."
 
         return True, None
 
