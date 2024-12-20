@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7e05a13f-0856-4bb6-a415-62c8d098c711" name="Changes" comment="fix: End game disiplay">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-    </list>
+    <list default="true" id="7e05a13f-0856-4bb6-a415-62c8d098c711" name="Changes" comment="Fix: all pegs occupied bug" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -284,7 +281,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734377057051</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="Fix: all pegs occupied bug">
+      <option name="closed" value="true" />
+      <created>1734715770021</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1734715770021</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -307,19 +312,20 @@
     <MESSAGE value="Add validation to check if all steps in a move already have sticks" />
     <MESSAGE value="Remove unused player_moves tracking from game logic" />
     <MESSAGE value="fix: End game disiplay" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: End game disiplay" />
+    <MESSAGE value="Fix: all pegs occupied bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix: all pegs occupied bug" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main.py</url>
-          <line>169</line>
+          <line>170</line>
           <option name="timeStamp" value="22" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main.py</url>
-          <line>171</line>
+          <line>172</line>
           <option name="timeStamp" value="23" />
         </line-breakpoint>
       </breakpoints>
