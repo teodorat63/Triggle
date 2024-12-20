@@ -134,9 +134,9 @@ class TriggleGame:
         self.board = Board(side_length)
         self.game_rendered = GameRendered()
         self.current_player = first_player
-        self.max_sticks = None
+        self.max_sticks = self.calculate_max_sticks()
         self.max_triangles = self.calculate_max_triangles()
-        self.peg_number = None
+        self.peg_number = sum(len(row) for row in self.board.state)
 
     def display_board(self):
         self.game_rendered.display_board(self.board)
@@ -212,7 +212,7 @@ class TriggleGame:
 
             dr, dc = deltas[direction]
 
-            if not (0 <= r < len(self.board.state) and 0 <= c < len(self.board.state[r])):
+            if not (0 <= r < len(self.board.side_length) and 0 <= c < len(self.board.side_length[r])):
                 raise ValueError("Move out of bounds.")
 
             next_r, next_c = r + dr, c + dc
@@ -344,9 +344,6 @@ def setup_game():
 
     game = TriggleGame(n, first_player)
 
-    game.peg_number = sum(len(row) for row in game.board.state)
-    game.max_sticks = game.calculate_max_sticks()
-
     return game
 
 def main():
@@ -370,6 +367,3 @@ def main():
 
     game.display_board()
     print("\nGame Over!")
-
-if __name__ == "__main__":
-    main()
