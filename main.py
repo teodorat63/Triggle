@@ -316,7 +316,7 @@ class TriggleGame:
         possible_states = []
 
         for move in possible_moves:
-            new_state = self.clone()
+            new_state = copy.deepcopy(self)
 
             # Apply the move to the new state
             row, col, direction = move
@@ -346,7 +346,7 @@ class TriggleGame:
                     self.make_move(row, col, direction)
 
                     end = time.time()
-                    print(f"Time taken to run the code was {end-start} seconds")
+                    print(f"AI played in {end-start} seconds")
                 else:
                     move = input("Enter your move (format: row column direction): ").strip()
                     row, col, direction = move.rsplit(' ', 2)
@@ -354,7 +354,6 @@ class TriggleGame:
                     direction = direction.upper()
                     self.make_move(row, col, direction)
                 state_evaluation = evaluate_state(self)
-                print(f"State evaluation: {state_evaluation}")
                 self.switch_player()
 
             except ValueError as ex:
