@@ -411,7 +411,6 @@ def get_best_move(game: TriggleGame):
             continue
 
         game_copy = copy.deepcopy(game)
-        # Apply the move on the copied game state
         newState = game_copy.make_move(row, col, direction)
 
         if newState is None:
