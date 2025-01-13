@@ -1,16 +1,23 @@
 import copy
-
+from logging import exception
+import time
 
 
 class TriggleGame:
-    def __init__(self, side_length):
+    def __init__(self, side_length, first_player):
         self.side_length = side_length
         self.board = self.initialize_board(side_length)
         self.sticks = set()
         self.triangles = {}
-        self.current_player = None
-        self.max_sticks = None
-        self.peg_number = None
+        self.current_player = first_player
+        self.human_player = first_player
+        self.ai_player = 'O' if self.human_player == 'X' else 'X'
+        self.ai_score = 0
+        self.human_score = 0
+        self.peg_number = sum(len(row) for row in self.board)
+        self.max_sticks = self.calculate_max_sticks()
+        self.max_triangles = self.calculate_max_triangles()
+
 
     def initialize_board(self, side_length):
         return (
@@ -172,6 +179,7 @@ class TriggleGame:
 
         is_valid, error_message = self.is_valid_move(row, col, direction)
         if not is_valid:
+            print(self.sticks)
             raise ValueError(error_message)
 
         r, c = row, col
@@ -206,7 +214,7 @@ class TriggleGame:
             r, c = next_r, next_c
 
         self.check_and_capture_triangles()
-        self.switch_player()
+        return self
 
     def check_and_capture_triangles(self):
         def is_triangle_completed(corners):
@@ -249,28 +257,28 @@ class TriggleGame:
         self.current_player = 'X' if self.current_player == 'O' else 'O'
 
     def is_game_over(self):
-        max_triangles = self.calculate_max_triangles()
-
         x_count = sum(1 for owner in self.triangles.values() if owner == 'X')
         o_count = sum(1 for owner in self.triangles.values() if owner == 'O')
-        print("Scoreboard")
-        print(f"X: {'█' * x_count} ({x_count})")
-        print(f"O: {'█' * o_count} ({o_count})")
 
-        if x_count + o_count == max_triangles:
-            print("Game over: All triangles are captured.")
+        #prebaciti u check and capture triangles
+        if self.ai_player == 'O':
+            self.ai_score = o_count
+            self.human_score = x_count
+        else:
+            self.ai_score = x_count
+            self.human_score = o_count
+
+
+        if x_count + o_count == self.max_triangles:
             return True
 
-        if x_count > max_triangles // 2:
-            print("Game over: Player X has won by majority!")
+        if x_count > self.max_triangles // 2:
             return True
 
-        if o_count > max_triangles // 2:
-            print("Game over: Player O has won by majority!")
+        if o_count > self.max_triangles // 2:
             return True
 
         if len(self.sticks) == self.max_sticks:
-            print("Game over: All sticks are placed.")
             return True
 
         return False
@@ -308,7 +316,7 @@ class TriggleGame:
         possible_states = []
 
         for move in possible_moves:
-            new_state = copy.deepcopy(self)
+            new_state = self.clone()
 
             # Apply the move to the new state
             row, col, direction = move
@@ -319,61 +327,137 @@ class TriggleGame:
 
         return possible_states
 
+
+    def play(self):
+
+        while not self.is_game_over():
+
+            try:
+                print(f"\n{self.current_player}'s turn.")
+                print("Scoreboard")
+                print(f"{self.ai_player}: {'█' * self.ai_score} ({self.ai_score})")
+                print(f"{self.human_player}: {'█' * self.human_score} ({self.human_score})")
+                self.display_board()
+
+                if self.current_player == self.ai_player:
+                    print("Computer is playing...")
+                    start = time.time()
+                    row, col, direction = get_best_move(self)
+                    self.make_move(row, col, direction)
+
+                    end = time.time()
+                    print(f"Time taken to run the code was {end-start} seconds")
+                else:
+                    move = input("Enter your move (format: row column direction): ").strip()
+                    row, col, direction = move.rsplit(' ', 2)
+                    row, col = ord(row.upper()) - 65, int(col) - 1
+                    direction = direction.upper()
+                    self.make_move(row, col, direction)
+                state_evaluation = evaluate_state(self)
+                print(f"State evaluation: {state_evaluation}")
+                self.switch_player()
+
+            except ValueError as ex:
+                print(f"{ex}")
+            except Exception as e:
+                print(f"An error occurred: {e}")
+
+        if self.ai_score + self.human_score == self.max_triangles:
+            print("Game over: All triangles are captured.")
+
+        if self.human_score > self.max_triangles // 2:
+            print (f"Game over: Player {self.human_score} has won by majority!")
+
+        if self.ai_score > self.max_triangles // 2:
+            print(f"Game over: Player {self.ai_player} has won by majority!")
+
+
+def evaluate_state(game : TriggleGame):
+    return game.ai_score - game.human_score
+
+def minimax(game: TriggleGame, depth: int, alpha: float, beta: float):
+    if game.is_game_over() or depth == 0:
+        return evaluate_state(game)
+
+    if game.current_player == game.ai_player:
+        max_eval = float('-inf')
+        for newState in game.get_all_possible_states():
+            value = minimax(newState, depth - 1, alpha, beta)
+            max_eval = max(max_eval, value)
+            alpha = max(alpha, value)
+            if beta <= alpha:
+                break
+        return max_eval
+    else:
+        min_eval = float('inf')
+        for newState in game.get_all_possible_states():
+            value = minimax(newState, depth - 1, alpha, beta)
+            min_eval = min(min_eval, value)
+            beta = min(beta, value)
+            if beta <= alpha:
+                break
+        return min_eval
+
+
+def get_best_move(game: TriggleGame):
+    best_move = None
+    best_value = float('-inf') if game.current_player == game.ai_player else float('inf')
+    alpha = float('-inf')
+    beta = float('inf')
+
+    for move in game.get_all_possible_moves():
+        row, col, direction = move
+        if not game.is_valid_move(row, col, direction):  # Add this validation
+            print(f"Skipping invalid move: Row {row}, Col {col}, Direction {direction}")
+            continue
+
+        game_copy = copy.deepcopy(game)
+        # Apply the move on the copied game state
+        newState = game_copy.make_move(row, col, direction)
+
+        if newState is None:
+            continue
+
+        value = minimax(newState, depth=2, alpha=alpha, beta=beta)
+        if game.current_player == game.ai_player:
+            if value > best_value:
+                best_value = value
+                best_move = move
+            alpha = max(alpha, value)
+        else:
+            if value < best_value:
+                best_value = value
+                best_move = move
+            beta = min(beta, value)
+
+        if beta <= alpha:
+            break
+    return best_move
+
+
 def setup_game():
     n = int(input("Enter the side length of the hexagonal board (4-8): "))
     if n < 4 or n > 8:
         raise ValueError("Side length must be between 4 and 8.")
 
-    first_player = input("Who will play first? (X/O): ").strip().upper()
+    first_player = input("Who do you wanna play as? (X/O): ").strip().upper()
     if first_player not in ['X', 'O']:
         raise ValueError("Invalid choice. Choose 'X' or 'O'.")
 
-    game = TriggleGame(n)
-    game.current_player = first_player
-
-    game.peg_number = sum(len(row) for row in game.board)
-    game.max_sticks = game.calculate_max_sticks()
+    game = TriggleGame(n, first_player)
 
     return game
 
-def test_generate_states():
-    game = setup_game()
-    game.display_board()
-
-    print(f"\nCurrent player: {game.current_player}")
-    print("Generating all possible moves...")
-    possible_moves = game.get_all_possible_moves()
-    print(f"Total possible moves: {len(possible_moves)}")
-    print(possible_moves)
-
-    print("\nGenerating all possible game states...")
-    possible_states = game.get_all_possible_states()
-    print(f"Total possible game states: {len(possible_states)}")
-    # for i, state in enumerate(possible_states[:5]):
-    #     print(f"\nState {i + 1}:")
-    #     state.display_board()
-
 def main():
-    game = setup_game()
+    try:
+        game = setup_game()
+        game.play()
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
-    while not game.is_game_over():
-        print(f"\n{game.current_player}'s turn.")
-        game.display_board()
 
-        try:
-            move = input("Enter your move (format: row column direction): ").strip()
-            row, col, direction = move.rsplit(' ', 2)
-            row, col = ord(row.upper()) - 65, int(col) - 1
-            direction = direction.upper()
-            game.make_move(row, col, direction)
 
-        except ValueError as e:
-            print(f"Error: {e}")
-        except Exception as e:
-            print(f"Unexpected error: {e}")
 
-    game.display_board()
-    print("\nGame Over!")
 
 if __name__ == "__main__":
     main()
