@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7e05a13f-0856-4bb6-a415-62c8d098c711" name="Changes" comment="Implement AI Gameplay with State Cloning and Optimization&#10;&#10;- Added AI functionality to play the game, allowing it to make moves autonomously.&#10;- Implemented alpha-beta pruning and state evaluation for better decision-making.&#10;- AI now evaluates possible states and selects the best move based on minimax algorithm.&#10;- First implementation of the AI playing the game, making it fully interactive.">
+    <list default="true" id="7e05a13f-0856-4bb6-a415-62c8d098c711" name="Changes" comment="Fully fubctional">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
@@ -305,7 +305,23 @@
       <option name="project" value="LOCAL" />
       <updated>1736789763696</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Minimal fixes">
+      <option name="closed" value="true" />
+      <created>1736791598320</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1736791598320</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Fully fubctional">
+      <option name="closed" value="true" />
+      <created>1736791699547</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1736791699547</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -341,6 +357,8 @@
     <MESSAGE value="fix: End game disiplay" />
     <MESSAGE value="Fix: all pegs occupied bug" />
     <MESSAGE value="Implement AI Gameplay with State Cloning and Optimization&#10;&#10;- Added AI functionality to play the game, allowing it to make moves autonomously.&#10;- Implemented alpha-beta pruning and state evaluation for better decision-making.&#10;- AI now evaluates possible states and selects the best move based on minimax algorithm.&#10;- First implementation of the AI playing the game, making it fully interactive." />
-    <option name="LAST_COMMIT_MESSAGE" value="Implement AI Gameplay with State Cloning and Optimization&#10;&#10;- Added AI functionality to play the game, allowing it to make moves autonomously.&#10;- Implemented alpha-beta pruning and state evaluation for better decision-making.&#10;- AI now evaluates possible states and selects the best move based on minimax algorithm.&#10;- First implementation of the AI playing the game, making it fully interactive." />
+    <MESSAGE value="Minimal fixes" />
+    <MESSAGE value="Fully fubctional" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fully fubctional" />
   </component>
 </project>

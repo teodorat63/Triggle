@@ -1,5 +1,4 @@
 import copy
-from logging import exception
 import time
 
 
@@ -9,14 +8,12 @@ class TriggleGame:
         self.board = self.initialize_board(side_length)
         self.sticks = set()
         self.triangles = {}
-        self.current_player = first_player
+        self.current_player = 'X'
         self.human_player = first_player
-        self.ai_player = 'O' if self.human_player == 'X' else 'X'
-        self.ai_score = 0
-        self.human_score = 0
         self.peg_number = sum(len(row) for row in self.board)
         self.max_sticks = self.calculate_max_sticks()
         self.max_triangles = self.calculate_max_triangles()
+        self.score = {'X': 0, 'O': 0}
 
 
     def initialize_board(self, side_length):
@@ -25,7 +22,15 @@ class TriggleGame:
             [[None] * (2 * side_length - i - 1) for i in range(1, side_length)]  # Lower triangle
         )
 
+    def display_score(self):
+        print(f"\n{self.current_player}'s turn.")
+        print("Scoreboard")
+        for player, score in self.score.items():
+            print(f"{player}: {'█' * score} ({score})")
+
     def display_board(self):
+        self.display_score()
+
         n = self.side_length
         max_width = 2 * self.side_length - 1
         column_numbers = '     '.join(f"{i}" for i in range(1, max_width + 1))
@@ -58,7 +63,6 @@ class TriggleGame:
 
                 # Add right diagonal
                 first_triangle_line.append("\\" if down_right else " ")
-                #first_triangle_line.append("   ")
 
                 # Get the triangle owner upper
                 triangle_owner = self.get_triangle_owner(i, j, True)
@@ -252,33 +256,22 @@ class TriggleGame:
                         triangle_key = tuple(sorted(corners))
                         if triangle_key not in self.triangles:
                             self.triangles[triangle_key] = self.current_player
+                            #Change the score
+                            self.score[self.current_player] += 1
 
     def switch_player(self):
         self.current_player = 'X' if self.current_player == 'O' else 'O'
 
+
     def is_game_over(self):
-        x_count = sum(1 for owner in self.triangles.values() if owner == 'X')
-        o_count = sum(1 for owner in self.triangles.values() if owner == 'O')
 
-        #prebaciti u check and capture triangles
-        if self.ai_player == 'O':
-            self.ai_score = o_count
-            self.human_score = x_count
-        else:
-            self.ai_score = x_count
-            self.human_score = o_count
-
-
-        if x_count + o_count == self.max_triangles:
+        if self.score['X'] + self.score['O'] == self.max_triangles:
             return True
 
-        if x_count > self.max_triangles // 2:
+        if self.score['X'] > self.max_triangles // 2:
             return True
 
-        if o_count > self.max_triangles // 2:
-            return True
-
-        if len(self.sticks) == self.max_sticks:
+        if self.score['O'] > self.max_triangles // 2:
             return True
 
         return False
@@ -328,57 +321,60 @@ class TriggleGame:
         return possible_states
 
 
-    def play(self):
 
-        while not self.is_game_over():
+def human_move(game: TriggleGame):
+    move = input("Enter your move (format: row column direction): ").strip()
+    row, col, direction = move.rsplit(' ', 2)
+    row, col = ord(row.upper()) - 65, int(col) - 1
+    direction = direction.upper()
+    game.make_move(row, col, direction)
 
-            try:
-                print(f"\n{self.current_player}'s turn.")
-                print("Scoreboard")
-                print(f"{self.ai_player}: {'█' * self.ai_score} ({self.ai_score})")
-                print(f"{self.human_player}: {'█' * self.human_score} ({self.human_score})")
-                self.display_board()
+def computer_move(game: TriggleGame):
+    print("Computer is playing...")
+    start = time.time()
+    row, col, direction = get_best_move(game)
+    game.make_move(row, col, direction)
 
-                if self.current_player == self.ai_player:
-                    print("Computer is playing...")
-                    start = time.time()
-                    row, col, direction = get_best_move(self)
-                    self.make_move(row, col, direction)
-
-                    end = time.time()
-                    print(f"AI played in {end-start} seconds")
-                else:
-                    move = input("Enter your move (format: row column direction): ").strip()
-                    row, col, direction = move.rsplit(' ', 2)
-                    row, col = ord(row.upper()) - 65, int(col) - 1
-                    direction = direction.upper()
-                    self.make_move(row, col, direction)
-                state_evaluation = evaluate_state(self)
-                self.switch_player()
-
-            except ValueError as ex:
-                print(f"{ex}")
-            except Exception as e:
-                print(f"An error occurred: {e}")
-
-        if self.ai_score + self.human_score == self.max_triangles:
-            print("Game over: All triangles are captured.")
-
-        if self.human_score > self.max_triangles // 2:
-            print (f"Game over: Player {self.human_score} has won by majority!")
-
-        if self.ai_score > self.max_triangles // 2:
-            print(f"Game over: Player {self.ai_player} has won by majority!")
-
+    end = time.time()
+    print(f"Computer played in {end - start} seconds")
 
 def evaluate_state(game : TriggleGame):
-    return game.ai_score - game.human_score
+    return game.score['O'] - game.score['X']
+
+
+def play(game: TriggleGame):
+    while not game.is_game_over():
+
+        try:
+            game.display_board()
+
+            if game.current_player == game.human_player:
+                human_move(game)
+            else:
+                computer_move(game)
+
+            game.switch_player()
+
+
+        except ValueError as ex:
+            print(f"{ex}")
+        except Exception as e:
+            print(f"An error occurred: {e}")
+
+    if game.score['X'] + game.score['O'] == game.max_triangles:
+        print("Game over: All triangles are captured.")
+
+    if game.score['X'] > game.max_triangles // 2:
+        print(f"Game over: Player X has won by majority!")
+
+    if game.score['O'] > game.max_triangles // 2:
+        print(f"Game over: Player O has won by majority!")
 
 def minimax(game: TriggleGame, depth: int, alpha: float, beta: float):
     if game.is_game_over() or depth == 0:
         return evaluate_state(game)
 
-    if game.current_player == game.ai_player:
+    if game.current_player == "O":
         max_eval = float('-inf')
         for newState in game.get_all_possible_states():
             value = minimax(newState, depth - 1, alpha, beta)
@@ -397,16 +393,15 @@ def minimax(game: TriggleGame, depth: int, alpha: float, beta: float):
                 break
         return min_eval
 
-
 def get_best_move(game: TriggleGame):
     best_move = None
-    best_value = float('-inf') if game.current_player == game.ai_player else float('inf')
+    best_value = float('-inf') if game.current_player == 'O' else float('inf')
     alpha = float('-inf')
     beta = float('inf')
 
     for move in game.get_all_possible_moves():
         row, col, direction = move
-        if not game.is_valid_move(row, col, direction):  # Add this validation
+        if not game.is_valid_move(row, col, direction):
             print(f"Skipping invalid move: Row {row}, Col {col}, Direction {direction}")
             continue
 
@@ -417,7 +412,7 @@ def get_best_move(game: TriggleGame):
             continue
 
         value = minimax(newState, depth=2, alpha=alpha, beta=beta)
-        if game.current_player == game.ai_player:
+        if game.current_player == 'O':
             if value > best_value:
                 best_value = value
                 best_move = move
@@ -431,7 +426,6 @@ def get_best_move(game: TriggleGame):
         if beta <= alpha:
             break
     return best_move
-
 
 def setup_game():
     n = int(input("Enter the side length of the hexagonal board (4-8): "))
@@ -449,7 +443,7 @@ def setup_game():
 def main():
     try:
         game = setup_game()
-        game.play()
+        play(game)
     except Exception as e:
         print(f"An error occurred: {e}")
 
