@@ -183,7 +183,6 @@ class TriggleGame:
 
         is_valid, error_message = self.is_valid_move(row, col, direction)
         if not is_valid:
-            print(self.sticks)
             raise ValueError(error_message)
 
         r, c = row, col
@@ -369,6 +368,8 @@ def play(game: TriggleGame):
 
     if game.score['O'] > game.max_triangles // 2:
         print(f"Game over: Player O has won by majority!")
+
+    game.display_board()
 
 def minimax(game: TriggleGame, depth: int, alpha: float, beta: float):
     if game.is_game_over() or depth == 0:
