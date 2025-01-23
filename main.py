@@ -15,7 +15,6 @@ class TriggleGame:
         self.max_triangles = self.calculate_max_triangles()
         self.score = {'X': 0, 'O': 0}
 
-
     def initialize_board(self, side_length):
         return (
             [[None] * (side_length + i) for i in range(side_length)] +  # Upper triangle
@@ -217,6 +216,7 @@ class TriggleGame:
             r, c = next_r, next_c
 
         self.check_and_capture_triangles()
+        self.switch_player()
         return self
 
     def check_and_capture_triangles(self):
@@ -352,9 +352,6 @@ def play(game: TriggleGame):
             else:
                 computer_move(game)
 
-            game.switch_player()
-
-
         except ValueError as ex:
             print(f"{ex}")
         except Exception as e:
@@ -375,6 +372,7 @@ def minimax(game: TriggleGame, depth: int, alpha: float, beta: float):
     if game.is_game_over() or depth == 0:
         return evaluate_state(game)
 
+    #maximizing player
     if game.current_player == "O":
         max_eval = float('-inf')
         for newState in game.get_all_possible_states():
@@ -412,7 +410,7 @@ def get_best_move(game: TriggleGame):
         if newState is None:
             continue
 
-        value = minimax(newState, depth=2, alpha=alpha, beta=beta)
+        value = minimax(newState, depth=1, alpha=alpha, beta=beta)
         if game.current_player == 'O':
             if value > best_value:
                 best_value = value
@@ -447,10 +445,6 @@ def main():
         play(game)
     except Exception as e:
         print(f"An error occurred: {e}")
-
-
-
-
 
 if __name__ == "__main__":
     main()

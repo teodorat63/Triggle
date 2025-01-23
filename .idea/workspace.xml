@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7e05a13f-0856-4bb6-a415-62c8d098c711" name="Changes" comment="Clean up">
+    <list default="true" id="7e05a13f-0856-4bb6-a415-62c8d098c711" name="Changes" comment="fix: Display board after game ended">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -336,7 +337,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736878147174</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="fix: Display board after game ended">
+      <option name="closed" value="true" />
+      <created>1737231793470</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1737231793470</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -375,6 +384,7 @@
     <MESSAGE value="Minimal fixes" />
     <MESSAGE value="Fully fubctional" />
     <MESSAGE value="Clean up" />
-    <option name="LAST_COMMIT_MESSAGE" value="Clean up" />
+    <MESSAGE value="fix: Display board after game ended" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: Display board after game ended" />
   </component>
 </project>
