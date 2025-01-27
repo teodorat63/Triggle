@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7e05a13f-0856-4bb6-a415-62c8d098c711" name="Changes" comment="fix: Display board after game ended">
+    <list default="true" id="7e05a13f-0856-4bb6-a415-62c8d098c711" name="Changes" comment="fix: fixed game logic by moving switch_player to make_move">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
@@ -49,14 +49,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.editor&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.main.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "settings.editor.selected.configurable": "preferences.editor"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="Triggle" />
@@ -345,7 +345,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737231793470</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="fix: fixed game logic by moving switch_player to make_move">
+      <option name="closed" value="true" />
+      <created>1737640891991</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1737640891991</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -360,7 +368,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Initial commit" />
     <MESSAGE value="Simplified the logic for locating the pegs with its coordinates" />
     <MESSAGE value="Fixed out-of-bounds validation in is_valid_move method" />
     <MESSAGE value="added logic to calculate maximum triangles&#10;&#10;- Added `calculate_max_triangles` function for reusability.&#10;- Integrated the function into `is_game_over` to simplify logic." />
@@ -385,6 +392,7 @@
     <MESSAGE value="Fully fubctional" />
     <MESSAGE value="Clean up" />
     <MESSAGE value="fix: Display board after game ended" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: Display board after game ended" />
+    <MESSAGE value="fix: fixed game logic by moving switch_player to make_move" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: fixed game logic by moving switch_player to make_move" />
   </component>
 </project>

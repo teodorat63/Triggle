@@ -109,7 +109,7 @@ class TriggleGame:
         triangle_owner = " "
 
         # Determine potential triangles based on `firstRow` flag
-        if downward:  # Use downward-facing triangle formula
+        if downward:  #fownward-facing triangle formula
             if row < self.side_length - 1:  # Upper triangle board
                 potential_triangles = [
                     [(row, col), (row, col + 1), (row + 1, col+1)]  # Downward-facing triangle
@@ -358,7 +358,7 @@ def play(game: TriggleGame):
             print(f"An error occurred: {e}")
 
     if game.score['X'] + game.score['O'] == game.max_triangles:
-        print("Game over: All triangles are captured.")
+        print("Game over: Draw!")
 
     if game.score['X'] > game.max_triangles // 2:
         print(f"Game over: Player X has won by majority!")
@@ -410,7 +410,7 @@ def get_best_move(game: TriggleGame):
         if newState is None:
             continue
 
-        value = minimax(newState, depth=1, alpha=alpha, beta=beta)
+        value = minimax(newState, depth=3, alpha=alpha, beta=beta)
         if game.current_player == 'O':
             if value > best_value:
                 best_value = value
