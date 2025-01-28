@@ -357,7 +357,7 @@ def play(game: TriggleGame):
         except Exception as e:
             print(f"An error occurred: {e}")
 
-    if game.score['X'] + game.score['O'] == game.max_triangles:
+    if game.score['X'] + game.score['O'] == game.max_triangles and game.score['X'] == game.score['O']:
         print("Game over: Draw!")
 
     if game.score['X'] > game.max_triangles // 2:
@@ -410,7 +410,7 @@ def get_best_move(game: TriggleGame):
         if newState is None:
             continue
 
-        value = minimax(newState, depth=3, alpha=alpha, beta=beta)
+        value = minimax(newState, depth=2, alpha=alpha, beta=beta)
         if game.current_player == 'O':
             if value > best_value:
                 best_value = value
