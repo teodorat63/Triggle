@@ -22,8 +22,8 @@ The goal is to control strategic positions and outmaneuver your opponent—wheth
 ## 💻 How to Play
 
 1. Clone this repository:
-   git clone https://github.com/yourusername/triggle-ai.git
-   cd triggle-ai
+git clone https://github.com/teodorat63/Triggle.git
+cd triggle-ai
 
 2.Run the game:
 python triggle.py
