@@ -17,6 +17,9 @@ The goal is to control strategic positions and outmaneuver your opponent—wheth
 ### Board
 ![Board Screenshot](assets/screenshots/board.png)
 
+### User Move
+![User Move Screenshot](assets/screenshots/userMove.png)
+
 ### Computer Move
 ![Computer Move](assets/screenshots/computerMove.png)
 
@@ -29,8 +32,7 @@ The goal is to control strategic positions and outmaneuver your opponent—wheth
 ### Out of Bounds
 ![Out of Bounds Screenshot](assets/screenshots/outOfBounds.png)
 
-### User Move
-![User Move Screenshot](assets/screenshots/userMove.png)
+
 ## 🤖 Features
 
 - Human vs. AI gameplay
