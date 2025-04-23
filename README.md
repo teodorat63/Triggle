@@ -11,6 +11,26 @@ Triggle is a triangular grid-based board game. Each move is defined by a directi
 
 The goal is to control strategic positions and outmaneuver your opponent—whether you're the human or the algorithm!
 
+
+## Gameplay Screenshots
+
+### Board
+![Board Screenshot](assets/screenshots/board.png)
+
+### Computer Move
+![Computer Move](assets/screenshots/computerMove.png)
+
+### Endgame
+![Endgame Screenshot](assets/screenshots/endgame.png)
+
+### Invalid Direction
+![Invalid Direction Screenshot](assets/screenshots/invalidDirection.png)
+
+### Out of Bounds
+![Out of Bounds Screenshot](assets/screenshots/outOfBounds.png)
+
+### User Move
+![User Move Screenshot](assets/screenshots/userMove.png)
 ## 🤖 Features
 
 - Human vs. AI gameplay
@@ -18,6 +38,7 @@ The goal is to control strategic positions and outmaneuver your opponent—wheth
 - Alpha-beta pruning for performance optimization
 - Fully console-based interface
 - Game rules and logic based on the original Triggle board game
+- 
 
 ## 💻 How to Play
 
