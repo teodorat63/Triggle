@@ -1,8 +1,8 @@
-# 🎲 Triggle AI – Console-Based Python Game
+# Triggle AI – Console-Based Python Game
 
 A console-based implementation of the board game **Triggle**, where a human player competes against an AI opponent powered by the **Minimax algorithm with alpha-beta pruning**. The game is designed to be both strategic and fun, showcasing AI decision-making in a turn-based setting.
 
-## 🧠 Game Overview
+## Game Overview
 
 Triggle is a triangular grid-based board game. Each move is defined by a direction:
 - `d` – right  
@@ -42,7 +42,7 @@ The goal is to control strategic positions and outmaneuver your opponent—wheth
 - Game rules and logic based on the original Triggle board game
 - 
 
-## 💻 How to Play
+## How to Play
 
 1. Clone this repository:
 git clone https://github.com/teodorat63/Triggle.git
@@ -61,5 +61,3 @@ d → right
 
 The AI will respond after your move.
 
-##📜 License
-This project is open source and available under the MIT License.
